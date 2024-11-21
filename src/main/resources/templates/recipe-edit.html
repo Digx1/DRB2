@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Edit Recipe</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        /* Dynamic Gradient Background */
+        @keyframes moveGradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            height: 100vh;
+            margin: 0;
+            padding: 0;
+            animation: moveGradient 20s ease infinite;
+            background: linear-gradient(135deg, #FF7E5F, #FEB47B, #FF9A8B, #FAD0C4, #A1C4FD, #C2E9FB);
+            background-size: 500% 500%;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            background: rgba(255, 255, 255, 0.85);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            color: #333;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-size: 1.1em;
+            font-weight: bold;
+            display: block;
+            margin-bottom: 10px;
+            color: #555;
+        }
+
+        input[type="text"], input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f7f7f7;
+            font-size: 1.1em;
+        }
+
+        input[type="text"]:focus, input[type="number"]:focus {
+            outline: none;
+            border-color: #00bcd4;
+        }
+
+        button {
+            display: inline-block;
+            padding: 12px 25px;
+            font-size: 1.1em;
+            font-weight: bold;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            background-color: #00bcd4; /* Turquoise */
+            color: white;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #008c9e; /* Darker Turquoise */
+        }
+
+        .btn-secondary {
+            display: inline-block;
+            padding: 12px 25px;
+            font-size: 1.1em;
+            font-weight: bold;
+            background-color: #FFB347; /* Sandy Beige */
+            color: white;
+            margin-left: 10px;
+            text-align: center;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-secondary:hover {
+            background-color: #F9A825; /* Lighter Sandy Beige */
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        /* Mobile Responsiveness */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.8rem;
+            }
+            .container {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Edit Recipe</h1>
+    <form th:action="@{/recipes/update}" th:object="${recipe}" method="post">
+        <!-- Hidden ID Field -->
+        <input type="hidden" th:field="*{id}"/>
+
+        <div class="form-group">
+            <label for="name">Name:</label>
+            <input type="text" id="name" th:field="*{name}" class="form-control" required>
+        </div>
+
+        <div class="form-group">
+            <label for="description">Description:</label>
+            <input type="text" id="description" th:field="*{description}" class="form-control" required>
+        </div>
+
+        <div class="form-group">
+            <label for="ingredients">Ingredients (comma-separated):</label>
+            <input type="text" id="ingredients" th:field="*{ingredients}" class="form-control" required>
+        </div>
+
+        <div class="form-group">
+            <label for="steps">Steps (comma-separated):</label>
+            <input type="text" id="steps" th:field="*{steps}" class="form-control" required>
+        </div>
+
+        <div class="form-group">
+            <label for="category">Category:</label>
+            <input type="text" id="category" th:field="*{category}" class="form-control" required>
+        </div>
+
+        <div class="form-group">
+            <label for="cookingTime">Cooking Time:</label>
+            <input type="number" id="cookingTime" th:field="*{cookingTime}" class="form-control" required>
+        </div>
+
+        <div class="form-group">
+            <label for="tags">Tags:</label>
+            <input type="text" id="tags" th:field="*{tags}" class="form-control" required>
+        </div>
+
+        <div>
+            <button type="submit">Save</button>
+            <a th:href="@{/recipes}" class="btn-secondary">Back to Recipe List</a>
+        </div>
+    </form>
+</div>
+</body>
+</html>

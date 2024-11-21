@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recipe List & Categories</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <style>
+        @keyframes moveGradient {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            height: 100vh;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            animation: moveGradient 20s ease infinite;
+            background: linear-gradient(135deg, #FF7E5F, #FEB47B, #FF9A8B, #FAD0C4, #A1C4FD, #C2E9FB);
+            background-size: 500% 500%;
+        }
+
+        h1, h2 {
+            color: #1c1c1c;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #FFB347, #F9A825);
+            color: white;
+            border: none;
+            font-size: 1rem;
+            padding: 10px 20px;
+            transition: transform 0.3s, background 0.3s;
+        }
+
+        .btn-success:hover {
+            background: linear-gradient(135deg, #F57C00, #FFB74D);
+            transform: scale(1.05);
+        }
+
+        .table-container {
+            background: rgba(255, 255, 255, 0.85);
+            border-radius: 15px;
+            padding: 30px;
+            margin-top: 40px;
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+        }
+
+        .category-container {
+            background: rgba(0, 188, 212, 0.1); /* Light Turquoise */
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 20px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        .list-group-item {
+            border-radius: 8px;
+            background: linear-gradient(135deg, #FF9A8B, #FAD0C4);
+            font-weight: bold;
+            color: #333;
+            transition: transform 0.3s, background 0.3s;
+        }
+
+        .list-group-item:hover {
+            background: linear-gradient(135deg, #FEB47B, #FF7E5F);
+            transform: scale(1.05);
+        }
+
+        .table th, .table td {
+            padding: 12px;
+            font-size: 1rem;
+            background: rgba(255, 255, 255, 0.7);
+            border: 1px solid #ddd;
+        }
+
+        .table tbody tr:hover {
+            background: #FFF4D3;
+            transform: scale(1.02);
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            .table-container, .category-container {
+                padding: 10px;
+            }
+
+            .btn-group {
+                display: block;
+                margin-top: 10px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+<div class="container mt-4 animate__animated animate__fadeIn">
+    <h1>Recipe List & Categories</h1>
+    <div class="d-flex justify-content-between mb-3">
+        <h2>All Recipes</h2>
+        <a th:href="@{/recipes/add}" class="btn btn-success shadow">Add New Recipe</a>
+    </div>
+
+    <!-- Recipe Categories Section -->
+    <div class="category-container">
+        <h2>Recipe Categories</h2>
+        <div class="list-group mt-4">
+            <a th:href="@{/recipes/category/{category}(category='Desserts')}" class="list-group-item list-group-item-action">
+                Desserts
+            </a>
+            <a th:href="@{/recipes/category/{category}(category='Main Course')}" class="list-group-item list-group-item-action">
+                Main Course
+            </a>
+            <a th:href="@{/recipes/category/{category}(category='Appetizers')}" class="list-group-item list-group-item-action">
+                Appetizers
+            </a>
+            <a th:href="@{/recipes/category/{category}(category='Beverages')}" class="list-group-item list-group-item-action">
+                Beverages
+            </a>
+        </div>
+    </div>
+
+    <!-- Recipe List Section -->
+    <div class="table-container">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Ingredients</th>
+                <th>Steps</th>
+                <th>Cooking Time (mins)</th>
+                <th>Category</th>
+                <th>Tags</th>
+                <th class="text-center">Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="recipe : ${recipes}">
+                <td th:text="${recipe.id}"></td>
+                <td th:text="${recipe.name}"></td>
+                <td th:text="${recipe.description}"></td>
+                <td>
+                    <ul class="list-unstyled">
+                        <li th:each="ingredient : ${recipe.ingredients}" th:text="${ingredient}"></li>
+                    </ul>
+                </td>
+                <td>
+                    <ol>
+                        <li th:each="step : ${recipe.steps}" th:text="${step}"></li>
+                    </ol>
+                </td>
+                <td th:text="${recipe.cookingTime}"></td>
+                <td th:text="${recipe.category}"></td>
+                <td th:text="${recipe.tags}"></td>
+                <td class="text-center">
+                    <div class="btn-group">
+                        <a th:href="@{/recipes/edit/{id}(id=${recipe.id})}" class="btn btn-primary btn-sm">Edit</a>
+                        <form th:action="@{/recipes/delete/{id}(id=${recipe.id})}" method="post">
+                            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                        </form>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
